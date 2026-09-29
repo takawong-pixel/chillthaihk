@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>後台管理 | 潮泰佛</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body { background: var(--bg); }
+    #login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .login-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+    }
+    .login-box .logo-icon { margin: 0 auto 1rem; }
+    .login-box h2 { margin-bottom: 0.4rem; font-size: 1.3rem; }
+    .login-box .hint { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
+    .login-box input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .login-box input:focus { border-color: var(--primary); }
+    .login-error { color: #e74c3c; font-size: 0.85rem; margin-bottom: 0.75rem; display: none; }
+    #admin-app { display: none; }
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 0.4rem;
+    }
+    .cat-grid label {
+      display: flex; align-items: center; gap: 0.35rem;
+      font-size: 0.85rem; color: var(--text-muted); cursor: pointer;
+      padding: 0.3rem 0.4rem; border-radius: 6px;
+    }
+    .cat-grid label:hover { background: var(--bg-hover); }
+    .cat-grid input { width: auto; margin: 0; }
+    .sold-section {
+      background: rgba(155,34,38,0.08);
+      border: 1px solid rgba(155,34,38,0.3);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-top: 0.5rem;
+    }
+    .sold-section h4 { color: #e74c3c; font-size: 0.9rem; margin-bottom: 0.75rem; }
+    .status-badge {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .status-badge.available { background: rgba(45,106,79,0.2); color: #52b788; }
+    .status-badge.sold { background: rgba(155,34,38,0.2); color: #e74c3c; }
+    .status-badge.preorder { background: rgba(201,162,39,0.2); color: var(--primary); }
+    .variant-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      align-items: center;
+    }
+    .variant-row input {
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+    .variant-row button {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      width: 32px; height: 32px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .variant-row button:hover { border-color: var(--danger); color: var(--danger); }
+    .field-group { display: none; }
+    .field-group.show { display: block; }
+  </style>
+</head>
+<body>
+  <div id="login-screen">
+    <div class="login-box">
+      <div class="logo-icon" style="width:56px;height:56px;font-size:1.8rem">潮</div>
+      <h2>潮泰佛 後台</h2>
+      <p class="hint">請輸入密碼以進入管理</p>
+      <div class="login-error" id="login-error">密碼錯誤，請再試一次</div>
+      <form onsubmit="tryLogin(event)">
+        <input type="password" id="password-input" placeholder="輸入密碼" autocomplete="current-password" autofocus>
+        <button type="submit" class="btn btn-primary" style="width:100%">進入後台</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="admin-app">
+    <div class="admin-layout">
+      <aside class="admin-sidebar">
+        <a href="../index.html" class="logo">
+          <div class="logo-icon">潮</div>
+          <div class="logo-text">
+            <span>潮泰佛</span>
+            <span>後台管理</span>
+          </div>
+        </a>
+        <nav class="admin-nav">
+          <a href="#" id="nav-list-shop" class="active" onclick="openList('shop');return false">📋 佛牌列表</a>
+          <a href="#" id="nav-add-shop" onclick="openAdd('shop');return false">➕ 新增佛牌</a>
+          <a href="#" id="nav-list-preorder" onclick="openList('preorder');return false">📋 聖物預訂列表</a>
+          <a href="#" id="nav-add-preorder" onclick="openAdd('preorder');return false">➕ 聖物預訂</a>
+          <a href="#" id="nav-list-casing" onclick="openList('casing');return false">📋 佛牌包殼列表</a>
+          <a href="#" id="nav-add-casing" onclick="openAdd('casing');return false">➕ 佛牌包殼</a>
+          <a href="#" onclick="exportJSON();return false">💾 匯出 JSON</a>
+          <a href="#" onclick="logout();return false">🔒 登出</a>
+          <a href="../index.html">← 回前台</a>
+        </nav>
+        <div style="margin-top:2rem;padding:0.8rem;background:rgba(201,162,39,0.1);border-radius:8px;font-size:0.8rem;color:var(--text-muted)">
+          <strong style="color:var(--primary)">使用說明</strong><br>
+          不同類型表單欄位不同。<br>
+          「已被供請」的佛牌不會顯示在前台。<br>
+          匯出 JSON 可覆蓋 data/products.json
+        </div>
+      </aside>
+
+      <main class="admin-main">
+        <div id="panel-list">
+          <div class="admin-header">
+            <h2 id="list-title">佛牌列表 <span id="product-count" style="font-size:0.9rem;color:var(--text-muted)"></span></h2>
+            <div style="display:flex;gap:0.5rem;align-items:center">
+              <select id="list-filter" onchange="renderTable()" style="padding:0.4rem 0.6rem;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.85rem">
+                <option value="all">全部</option>
+                <option value="available">可售</option>
+                <option value="sold">已供請</option>
+              </select>
+              <button class="btn btn-primary btn-sm" onclick="openAdd(currentSection)">+ 新增</button>
+            </div>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="admin-table">
+              <thead>
+                <tr id="table-head"></tr>
+              </thead>
+              <tbody id="admin-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="panel-add" style="display:none">
+          <div class="admin-header">
+            <h2 id="form-title">新增佛牌</h2>
+            <button class="btn btn-outline btn-sm" onclick="openList(currentSection)">← 返回列表</button>
+          </div>
+          <div class="form-card" style="max-width:720px">
+            <form id="product-form" onsubmit="saveProduct(event)">
+              <input type="hidden" id="edit-id">
+              <input type="hidden" id="f-section" value="shop">
+
+              <!-- Common: name -->
+              <div class="form-row">
+                <div class="form-group">
+                  <label>名稱 (中文) *</label>
+                  <input type="text" id="f-name" required placeholder="例：龍婆本 自身符管">
+                </div>
+                <div class="form-group field-shop" id="wrap-nameEn">
+                  <label>名稱 (英文)</label>
+                  <input type="text" id="f-nameEn" placeholder="LP Boon Self Amulet">
+                </div>
+              </div>
+
+              <!-- Shop + Preorder: master -->
+              <div class="form-row field-shop field-preorder" id="wrap-master-row">
+                <div class="form-group" id="wrap-master">
+                  <label id="label-master">師父 *</label>
+                  <input type="text" id="f-master" placeholder="龍婆本">
+                </div>
+                <div class="form-group field-shop" id="wrap-year">
+                  <label>年份</label>
+                  <input type="text" id="f-year" placeholder="2560">
+                </div>
+              </div>
+
+              <!-- Shop only: category -->
+              <div class="form-group field-shop" id="wrap-category">
+                <label>分類 *（可多選）</label>
+                <div class="cat-grid" id="cat-grid"></div>
+              </div>
+
+              <!-- Shop: temple + material single -->
+              <div class="form-row field-shop" id="wrap-temple-material">
+                <div class="form-group">
+                  <label>寺院</label>
+                  <input type="text" id="f-temple" placeholder="瓦班央寺">
+                </div>
+                <div class="form-group">
+                  <label>材質</label>
+                  <input type="text" id="f-material" placeholder="銅合金">
+                </div>
+              </div>
+
+              <!-- Image -->
+              <div class="form-group">
+                <label>圖片網址 *</label>
+                <input type="url" id="f-image" required placeholder="https://...">
+              </div>
+
+              <!-- Shop / Casing: single price -->
+              <div class="form-row field-shop field-casing" id="wrap-price-row">
+                <div class="form-group">
+                  <label>售價 (港幣 $) *</label>
+                  <input type="number" id="f-price" min="0" placeholder="2800">
+                </div>
+                <div class="form-group field-shop" id="wrap-originalPrice">
+                  <label>原價 (選填)</label>
+                  <input type="number" id="f-originalPrice" min="0" placeholder="3500">
+                </div>
+              </div>
+
+              <!-- Preorder: variants up to 8 -->
+              <div class="form-group field-preorder" id="wrap-variants">
+                <label>材質與售價（最多 8 項）*</label>
+                <div id="variants-list"></div>
+                <button type="button" class="btn btn-outline btn-sm" style="margin-top:0.4rem" onclick="addVariantRow()">+ 新增材質價格</button>
+              </div>
+
+              <!-- Preorder dates -->
+              <div class="form-row field-preorder" id="wrap-preorder-dates">
+                <div class="form-group">
+                  <label>預訂截單日期</label>
+                  <input type="date" id="f-deadline">
+                </div>
+                <div class="form-group">
+                  <label>預計出廟日期</label>
+                  <input type="date" id="f-expectedRelease">
+                </div>
+              </div>
+
+              <!-- Preorder status -->
+              <div class="form-group field-preorder" id="wrap-preorder-status">
+                <label>預訂狀態 *</label>
+                <select id="f-preorderStatus">
+                  <option value="接受預訂中">接受預訂中</option>
+                  <option value="已截單">已截單</option>
+                  <option value="待出廟">待出廟</option>
+                  <option value="已出廟">已出廟</option>
+                  <option value="已到港">已到港</option>
+                </select>
+              </div>
+
+              <!-- Shop: stock -->
+              <div class="form-row field-shop" id="wrap-stock-tags">
+                <div class="form-group">
+                  <label>庫存 *</label>
+                  <input type="number" id="f-stock" min="0" value="1">
+                </div>
+                <div class="form-group">
+                  <label>標籤 (逗號分隔)</label>
+                  <input type="text" id="f-tags" placeholder="招財,避險,保平安">
+                </div>
+              </div>
+
+              <!-- Casing / Preorder tags only -->
+              <div class="form-group field-preorder field-casing" id="wrap-tags-only">
+                <label>標籤 (逗號分隔)</label>
+                <input type="text" id="f-tags2" placeholder="防水殼,包殼">
+              </div>
+
+              <!-- Description -->
+              <div class="form-group">
+                <label>描述 *</label>
+                <textarea id="f-description" required placeholder="介紹..."></textarea>
+              </div>
+
+              <div class="form-group">
+                <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
+                  <input type="checkbox" id="f-featured" style="width:auto">
+                  設為精選（顯示在首頁）
+                </label>
+              </div>
+
+              <!-- Shop only: sold section -->
+              <div class="sold-section field-shop" id="wrap-sold">
+                <h4>供請狀態（僅後台可見）</h4>
+                <div class="form-group">
+                  <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer">
+                    <input type="checkbox" id="f-sold" style="width:auto" onchange="toggleSoldFields()">
+                    已被供請（勾選後前台不再顯示）
+                  </label>
+                </div>
+                <div id="sold-fields" style="display:none">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>買家名稱</label>
+                      <input type="text" id="f-buyerName" placeholder="買家姓名">
+                    </div>
+                    <div class="form-group">
+                      <label>買家電話</label>
+                      <input type="text" id="f-buyerPhone" placeholder="電話號碼">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>成交日期</label>
+                      <input type="date" id="f-soldAt">
+                    </div>
+                    <div class="form-group">
+                      <label>賣出價格 (港幣 $)</label>
+                      <input type="number" id="f-soldPrice" min="0" placeholder="實際成交價">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group" style="margin-top:0.5rem;margin-bottom:0">
+                  <label>上架日期（系統自動）</label>
+                  <input type="text" id="f-listedAt" readonly style="opacity:0.7">
+                </div>
+              </div>
+
+              <!-- listedAt for non-shop -->
+              <div class="form-group field-preorder field-casing" id="wrap-listed-simple">
+                <label>上架日期（系統自動）</label>
+                <input type="text" id="f-listedAt2" readonly style="opacity:0.7">
+              </div>
+
+              <div style="display:flex;gap:0.75rem;margin-top:1.2rem">
+                <button type="submit" class="btn btn-primary">儲存</button>
+                <button type="button" class="btn btn-outline" onclick="openList(currentSection)">取消</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const ADMIN_PASSWORD = 'czycz781119';
+    const CATEGORIES = [
+      '崇笛','四面神','必打','魯士','鬼王','師傅自身','藥師佛','行走佛',
+      '哈努曼','坤平','食人虎','符管符珠','二哥豐','鷹神','善加財','水財佛','魂魄勇','其他'
+    ];
+    const PREORDER_STATUSES = ['接受預訂中','已截單','待出廟','已出廟','已到港'];
+
+    let products = [];
+    let currentSection = 'shop';
+
+    function tryLogin(e) {
+      e.preventDefault();
+      if (document.getElementById('password-input').value === ADMIN_PASSWORD) {
+        sessionStorage.setItem('cta_admin_auth', '1');
+        showAdmin();
+      } else {
+        document.getElementById('login-error').style.display = 'block';
+        document.getElementById('password-input').value = '';
+        document.getElementById('password-input').focus();
+      }
+    }
+    function showAdmin() {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-app').style.display = 'block';
+      buildCatGrid();
+      init();
+    }
+    function logout() {
+      sessionStorage.removeItem('cta_admin_auth');
+      location.reload();
+    }
+    if (sessionStorage.getItem('cta_admin_auth') === '1') showAdmin();
+
+    function buildCatGrid() {
+      document.getElementById('cat-grid').innerHTML = CATEGORIES.map(c =>
+        '<label><input type="checkbox" name="cat" value="' + c + '"> ' + c + '</label>'
+      ).join('');
+    }
+    function getSelectedCats() {
+      return Array.from(document.querySelectorAll('input[name="cat"]:checked')).map(el => el.value);
+    }
+    function setSelectedCats(cats) {
+      const arr = Array.isArray(cats) ? cats : (cats ? [cats] : []);
+      document.querySelectorAll('input[name="cat"]').forEach(el => {
+        el.checked = arr.includes(el.value);
+      });
+    }
+    function toggleSoldFields() {
+      document.getElementById('sold-fields').style.display =
+        document.getElementById('f-sold').checked ? 'block' : 'none';
+    }
+
+    function setNavActive(id) {
+      document.querySelectorAll('.admin-nav a').forEach(a => a.classList.remove('active'));
+      const el = document.getElementById(id);
+      if (el) el.classList.add('active');
+    }
+
+    function applySectionFields(section) {
+      // Hide all section-specific
+      document.querySelectorAll('.field-shop, .field-preorder, .field-casing').forEach(el => {
+        el.style.display = 'none';
+      });
+      // Show matching
+      document.querySelectorAll('.field-' + section).forEach(el => {
+        el.style.display = '';
+      });
+      // Master required only for shop
+      const masterInput = document.getElementById('f-master');
+      const masterLabel = document.getElementById('label-master');
+      if (section === 'shop') {
+        masterInput.required = true;
+        masterLabel.textContent = '師父 *';
+      } else if (section === 'preorder') {
+        masterInput.required = false;
+        masterLabel.textContent = '師父（選填）';
+        document.getElementById('wrap-master').style.display = '';
+        document.getElementById('wrap-master-row').style.display = '';
+      } else {
+        masterInput.required = false;
+      }
+      // Price required for shop/casing
+      document.getElementById('f-price').required = (section === 'shop' || section === 'casing');
+      // Stock required for shop
+      document.getElementById('f-stock').required = (section === 'shop');
+    }
+
+    // Variants
+    function addVariantRow(material, price) {
+      const list = document.getElementById('variants-list');
+      if (list.children.length >= 8) {
+        alert('最多 8 個材質價格');
+        return;
+      }
+      const row = document.createElement('div');
+      row.className = 'variant-row';
+      row.innerHTML =
+        '<input type="text" class="v-material" placeholder="例：黑銅" value="' + (material || '') + '">' +
+        '<input type="number" class="v-price" placeholder="售價 $" min="0" value="' + (price != null ? price : '') + '">' +
+        '<button type="button" onclick="this.parentElement.remove()" title="刪除">✕</button>';
+      list.appendChild(row);
+    }
+    function getVariants() {
+      const rows = document.querySelectorAll('#variants-list .variant-row');
+      const result = [];
+      rows.forEach(r => {
+        const m = r.querySelector('.v-material').value.trim();
+        const p = parseInt(r.querySelector('.v-price').value) || 0;
+        if (m) result.push({ material: m, price: p });
+      });
+      return result;
+    }
+    function setVariants(variants) {
+      const list = document.getElementById('variants-list');
+      list.innerHTML = '';
+      const arr = variants && variants.length ? variants : [{ material: '', price: '' }];
+      arr.forEach(v => addVariantRow(v.material, v.price));
+    }
+
+    function openList(section) {
+      currentSection = section || 'shop';
+      document.getElementById('panel-list').style.display = 'block';
+      document.getElementById('panel-add').style.display = 'none';
+      const listLabels = { shop: '佛牌列表', preorder: '聖物預訂列表', casing: '佛牌包殼列表' };
+      document.getElementById('list-title').innerHTML =
+        (listLabels[currentSection] || '列表') +
+        ' <span id="product-count" style="font-size:0.9rem;color:var(--text-muted)"></span>';
+      const listNav = { shop: 'nav-list-shop', preorder: 'nav-list-preorder', casing: 'nav-list-casing' };
+      setNavActive(listNav[currentSection] || 'nav-list-shop');
+      // filter options
+      const filt = document.getElementById('list-filter');
+      if (currentSection === 'shop') {
+        filt.style.display = '';
+      } else {
+        filt.style.display = 'none';
+        filt.value = 'all';
+      }
+      renderTable();
+    }
+
+    function openAdd(section) {
+      currentSection = section || 'shop';
+      document.getElementById('panel-list').style.display = 'none';
+      document.getElementById('panel-add').style.display = 'block';
+      document.getElementById('product-form').reset();
+      document.getElementById('edit-id').value = '';
+      document.getElementById('f-section').value = currentSection;
+      document.getElementById('f-stock').value = 1;
+      setSelectedCats([]);
+      document.getElementById('f-sold').checked = false;
+      toggleSoldFields();
+      const today = new Date().toISOString().slice(0, 10);
+      document.getElementById('f-listedAt').value = today;
+      document.getElementById('f-listedAt2').value = today;
+      setVariants([{ material: '', price: '' }]);
+      applySectionFields(currentSection);
+      const addLabels = { shop: '新增佛牌', preorder: '新增聖物預訂', casing: '新增佛牌包殼' };
+      document.getElementById('form-title').textContent = addLabels[currentSection] || '新增';
+      const addNav = { shop: 'nav-add-shop', preorder: 'nav-add-preorder', casing: 'nav-add-casing' };
+      setNavActive(addNav[currentSection] || 'nav-add-shop');
+    }
+
+    function showAddPanelOnly() {
+      document.getElementById('panel-list').style.display = 'none';
+      document.getElementById('panel-add').style.display = 'block';
+    }
+
+    async function init() {
+      const stored = localStorage.getItem('cta_products');
+      if (stored) {
+        products = JSON.parse(stored);
+      } else {
+        try {
+          const res = await fetch('../data/products.json');
+          products = await res.json();
+          products = products.map(p => ({ ...p, section: p.section || 'shop' }));
+          localStorage.setItem('cta_products', JSON.stringify(products));
+        } catch { products = []; }
+      }
+      products = products.map(p => ({ ...p, section: p.section || 'shop' }));
+      openList('shop');
+    }
+
+    function getCats(p) {
+      if (Array.isArray(p.category)) return p.category;
+      if (typeof p.category === 'string' && p.category) return [p.category];
+      return [];
+    }
+
+    function displayPrice(p) {
+      if (p.section === 'preorder' && p.variants && p.variants.length) {
+        const prices = p.variants.map(v => v.price).filter(x => x > 0);
+        if (prices.length === 0) return '$—';
+        const min = Math.min(...prices);
+        const max = Math.max(...prices);
+        return min === max ? '$' + min.toLocaleString() : '$' + min.toLocaleString() + ' 起';
+      }
+      return '$' + Number(p.price || 0).toLocaleString();
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('admin-table-body');
+      const thead = document.getElementById('table-head');
+      const filter = document.getElementById('list-filter')?.value || 'all';
+      let list = products.filter(p => (p.section || 'shop') === currentSection);
+      if (currentSection === 'shop') {
+        if (filter === 'available') list = list.filter(p => !p.sold);
+        if (filter === 'sold') list = list.filter(p => p.sold);
+      }
+
+      const countEl = document.getElementById('product-count');
+      if (countEl) countEl.textContent = '(' + list.length + ')';
+
+      if (currentSection === 'preorder') {
+        thead.innerHTML = '<th>圖片</th><th>名稱</th><th>師父</th><th>價格</th><th>狀態</th><th>截單</th><th>出廟</th><th>操作</th>';
+      } else if (currentSection === 'casing') {
+        thead.innerHTML = '<th>圖片</th><th>名稱</th><th>價格</th><th>上架日</th><th>操作</th>';
+      } else {
+        thead.innerHTML = '<th>圖片</th><th>名稱</th><th>師父</th><th>分類</th><th>價格</th><th>狀態</th><th>上架日</th><th>操作</th>';
+      }
+
+      if (list.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:2rem">尚無資料</td></tr>';
+        return;
+      }
+
+      if (currentSection === 'preorder') {
+        tbody.innerHTML = list.map(p => `
+          <tr>
+            <td><img src="${p.image}" alt="" onerror="this.src='https://via.placeholder.com/48/1a1a1a/c9a227?text=潮'"></td>
+            <td><strong>${p.name}</strong></td>
+            <td>${p.master || '—'}</td>
+            <td>${displayPrice(p)}</td>
+            <td><span class="status-badge preorder">${p.preorderStatus || '—'}</span></td>
+            <td style="font-size:0.8rem">${p.deadline || '—'}</td>
+            <td style="font-size:0.8rem">${p.expectedRelease || '—'}</td>
+            <td>
+              <div class="admin-actions">
+                <button onclick="editProduct('${p.id}')" title="編輯">✏️</button>
+                <button class="delete" onclick="deleteProduct('${p.id}')" title="刪除">🗑️</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      } else if (currentSection === 'casing') {
+        tbody.innerHTML = list.map(p => `
+          <tr>
+            <td><img src="${p.image}" alt="" onerror="this.src='https://via.placeholder.com/48/1a1a1a/c9a227?text=潮'"></td>
+            <td><strong>${p.name}</strong></td>
+            <td>$${Number(p.price||0).toLocaleString()}</td>
+            <td style="font-size:0.8rem">${p.listedAt || p.createdAt || '—'}</td>
+            <td>
+              <div class="admin-actions">
+                <button onclick="editProduct('${p.id}')" title="編輯">✏️</button>
+                <button class="delete" onclick="deleteProduct('${p.id}')" title="刪除">🗑️</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      } else {
+        tbody.innerHTML = list.map(p => `
+          <tr>
+            <td><img src="${p.image}" alt="" onerror="this.src='https://via.placeholder.com/48/1a1a1a/c9a227?text=潮'"></td>
+            <td><strong>${p.name}</strong></td>
+            <td>${p.master || '—'}</td>
+            <td style="font-size:0.8rem">${getCats(p).join('、')}</td>
+            <td>$${Number(p.price||0).toLocaleString()}</td>
+            <td>${p.sold ? '<span class="status-badge sold">已供請</span>' : '<span class="status-badge available">可售</span>'}</td>
+            <td style="font-size:0.8rem">${p.listedAt || p.createdAt || '—'}</td>
+            <td>
+              <div class="admin-actions">
+                <button onclick="editProduct('${p.id}')" title="編輯">✏️</button>
+                <button class="delete" onclick="deleteProduct('${p.id}')" title="刪除">🗑️</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    function editProduct(id) {
+      const p = products.find(x => x.id === id);
+      if (!p) return;
+      currentSection = p.section || 'shop';
+      showAddPanelOnly();
+      applySectionFields(currentSection);
+
+      document.getElementById('edit-id').value = p.id;
+      document.getElementById('f-section').value = currentSection;
+      document.getElementById('f-name').value = p.name || '';
+      document.getElementById('f-nameEn').value = p.nameEn || '';
+      document.getElementById('f-master').value = p.master || '';
+      document.getElementById('f-year').value = p.year || '';
+      setSelectedCats(p.category);
+      document.getElementById('f-temple').value = p.temple || '';
+      document.getElementById('f-material').value = p.material || '';
+      document.getElementById('f-image').value = p.image || '';
+      document.getElementById('f-price').value = p.price != null ? p.price : '';
+      document.getElementById('f-originalPrice').value = p.originalPrice != null ? p.originalPrice : '';
+      document.getElementById('f-stock').value = p.stock != null ? p.stock : 1;
+      document.getElementById('f-tags').value = (p.tags || []).join(',');
+      document.getElementById('f-tags2').value = (p.tags || []).join(',');
+      document.getElementById('f-description').value = p.description || '';
+      document.getElementById('f-featured').checked = !!p.featured;
+      document.getElementById('f-sold').checked = !!p.sold;
+      document.getElementById('f-buyerName').value = p.buyerName || '';
+      document.getElementById('f-buyerPhone').value = p.buyerPhone || '';
+      document.getElementById('f-soldAt').value = p.soldAt || '';
+      document.getElementById('f-soldPrice').value = p.soldPrice != null ? p.soldPrice : '';
+      document.getElementById('f-listedAt').value = p.listedAt || p.createdAt || '';
+      document.getElementById('f-listedAt2').value = p.listedAt || p.createdAt || '';
+      document.getElementById('f-deadline').value = p.deadline || '';
+      document.getElementById('f-expectedRelease').value = p.expectedRelease || '';
+      document.getElementById('f-preorderStatus').value = p.preorderStatus || '接受預訂中';
+      setVariants(p.variants && p.variants.length ? p.variants : [{ material: '', price: '' }]);
+      toggleSoldFields();
+
+      const editLabels = { shop: '編輯佛牌', preorder: '編輯聖物預訂', casing: '編輯佛牌包殼' };
+      document.getElementById('form-title').textContent = editLabels[currentSection] || '編輯';
+      const editNav = { shop: 'nav-add-shop', preorder: 'nav-add-preorder', casing: 'nav-add-casing' };
+      setNavActive(editNav[currentSection] || 'nav-add-shop');
+    }
+
+    function saveProduct(e) {
+      e.preventDefault();
+      const section = document.getElementById('f-section').value || currentSection || 'shop';
+      const id = document.getElementById('edit-id').value;
+      const isNew = !id;
+      const today = new Date().toISOString().slice(0, 10);
+      const existing = id ? products.find(p => p.id === id) : null;
+
+      let cats = [];
+      if (section === 'shop') {
+        cats = getSelectedCats();
+        if (cats.length === 0) { alert('請至少選擇一個分類'); return; }
+        if (!document.getElementById('f-master').value.trim()) { alert('請填寫師父'); return; }
+      }
+
+      let variants = [];
+      let price = parseInt(document.getElementById('f-price').value) || 0;
+      if (section === 'preorder') {
+        variants = getVariants();
+        if (variants.length === 0) { alert('請至少填寫一項材質與售價'); return; }
+        price = Math.min(...variants.map(v => v.price).filter(x => x > 0).concat([0]));
+      }
+
+      const tagsInput = (section === 'shop')
+        ? document.getElementById('f-tags').value
+        : document.getElementById('f-tags2').value;
+
+      const data = {
+        id: id || String(Date.now()),
+        section: section,
+        name: document.getElementById('f-name').value.trim(),
+        nameEn: section === 'casing' ? '' : document.getElementById('f-nameEn').value.trim(),
+        master: section === 'casing' ? '' : document.getElementById('f-master').value.trim(),
+        year: section === 'shop' ? document.getElementById('f-year').value.trim() : '',
+        category: section === 'shop' ? cats : [],
+        temple: section === 'shop' ? document.getElementById('f-temple').value.trim() : '',
+        material: section === 'shop' ? document.getElementById('f-material').value.trim() : '',
+        variants: section === 'preorder' ? variants : [],
+        image: document.getElementById('f-image').value.trim(),
+        images: [document.getElementById('f-image').value.trim()],
+        price: price,
+        originalPrice: section === 'shop' ? (parseInt(document.getElementById('f-originalPrice').value) || null) : null,
+        stock: section === 'shop' ? (parseInt(document.getElementById('f-stock').value) || 0) : 1,
+        tags: tagsInput.split(',').map(t => t.trim()).filter(Boolean),
+        description: document.getElementById('f-description').value.trim(),
+        descriptionEn: '',
+        featured: document.getElementById('f-featured').checked,
+        sold: section === 'shop' ? document.getElementById('f-sold').checked : false,
+        listedAt: isNew ? today : (existing?.listedAt || existing?.createdAt || today),
+        buyerName: section === 'shop' ? document.getElementById('f-buyerName').value.trim() : '',
+        buyerPhone: section === 'shop' ? document.getElementById('f-buyerPhone').value.trim() : '',
+        soldAt: section === 'shop' ? (document.getElementById('f-soldAt').value || '') : '',
+        soldPrice: section === 'shop' ? (parseInt(document.getElementById('f-soldPrice').value) || null) : null,
+        deadline: section === 'preorder' ? (document.getElementById('f-deadline').value || '') : '',
+        expectedRelease: section === 'preorder' ? (document.getElementById('f-expectedRelease').value || '') : '',
+        preorderStatus: section === 'preorder' ? document.getElementById('f-preorderStatus').value : '',
+        createdAt: existing?.createdAt || today
+      };
+
+      if (id) {
+        const idx = products.findIndex(p => p.id === id);
+        if (idx >= 0) products[idx] = data;
+      } else {
+        products.unshift(data);
+      }
+
+      localStorage.setItem('cta_products', JSON.stringify(products));
+      currentSection = section;
+      openList(section);
+      alert('已儲存！');
+    }
+
+    function deleteProduct(id) {
+      if (!confirm('確定刪除此項目？')) return;
+      products = products.filter(p => p.id !== id);
+      localStorage.setItem('cta_products', JSON.stringify(products));
+      renderTable();
+    }
+
+    function exportJSON() {
+      const blob = new Blob([JSON.stringify(products, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'products.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>

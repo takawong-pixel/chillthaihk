@@ -1,0 +1,276 @@
+[
+  {
+    "id": "1",
+    "name": "龍婆本 2560 自身符管",
+    "nameEn": "LP Boon Self Amulet 2560",
+    "price": 2800,
+    "originalPrice": 3500,
+    "category": [
+      "師傅自身",
+      "符管符珠"
+    ],
+    "master": "龍婆本",
+    "year": "2560",
+    "temple": "瓦班央寺",
+    "material": "銅合金",
+    "description": "龍婆本大師親製自身符管，具有強大的避險、招財、保平安功效。此款為2560年製作，品相完美，適合日常佩戴或供奉。",
+    "descriptionEn": "",
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop",
+    "images": [
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop"
+    ],
+    "tags": [
+      "招財",
+      "避險",
+      "保平安"
+    ],
+    "featured": true,
+    "stock": 3,
+    "sold": false,
+    "listedAt": "2024-01-15",
+    "buyerName": "",
+    "buyerPhone": "",
+    "soldAt": "",
+    "soldPrice": null,
+    "createdAt": "2024-01-15",
+    "section": "shop"
+  },
+  {
+    "id": "2",
+    "name": "龍婆坤 自身佛牌",
+    "nameEn": "LP Khun Self Amulet",
+    "price": 4500,
+    "originalPrice": 5200,
+    "category": [
+      "師傅自身"
+    ],
+    "master": "龍婆坤",
+    "year": "2537",
+    "temple": "瓦班萊寺",
+    "material": "紅銅",
+    "description": "經典龍婆坤自身佛牌，泰國最受歡迎的招財佛牌之一。具有極強的人緣、招財功效。老牌品相優良。",
+    "descriptionEn": "",
+    "image": "https://images.unsplash.com/photo-1617038260897-41db1bdb2c0f?w=400&h=400&fit=crop",
+    "images": [
+      "https://images.unsplash.com/photo-1617038260897-41db1bdb2c0f?w=400&h=400&fit=crop"
+    ],
+    "tags": [
+      "招財",
+      "人緣"
+    ],
+    "featured": true,
+    "stock": 1,
+    "sold": false,
+    "listedAt": "2024-02-20",
+    "buyerName": "",
+    "buyerPhone": "",
+    "soldAt": "",
+    "soldPrice": null,
+    "createdAt": "2024-02-20",
+    "section": "shop"
+  },
+  {
+    "id": "3",
+    "name": "阿贊白礦 四面神",
+    "nameEn": "Ajarn Pakon Phra Phrom",
+    "price": 1800,
+    "originalPrice": null,
+    "category": [
+      "四面神"
+    ],
+    "master": "阿贊白礦",
+    "year": "2565",
+    "temple": "私人法會",
+    "material": "銀",
+    "description": "阿贊白礦親製四面神，祈求事業順利、人緣佳、學業進步。銀質打造，精美細緻。",
+    "descriptionEn": "",
+    "image": "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&h=400&fit=crop",
+    "images": [
+      "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&h=400&fit=crop"
+    ],
+    "tags": [
+      "人緣",
+      "學業"
+    ],
+    "featured": true,
+    "stock": 5,
+    "sold": false,
+    "listedAt": "2024-03-10",
+    "buyerName": "",
+    "buyerPhone": "",
+    "soldAt": "",
+    "soldPrice": null,
+    "createdAt": "2024-03-10",
+    "section": "shop"
+  },
+  {
+    "id": "4",
+    "name": "龍婆醒 避險符布",
+    "nameEn": "LP Sing Protection Yantra Cloth",
+    "price": 980,
+    "originalPrice": 1200,
+    "category": [
+      "符管符珠"
+    ],
+    "master": "龍婆醒",
+    "year": "2563",
+    "temple": "瓦班通寺",
+    "material": "布",
+    "description": "龍婆醒避險符布，可摺疊放入錢包或隨身攜帶，提供強大防護力量。",
+    "descriptionEn": "",
+    "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop",
+    "images": [
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop"
+    ],
+    "tags": [
+      "避險",
+      "防護"
+    ],
+    "featured": false,
+    "stock": 8,
+    "sold": false,
+    "listedAt": "2024-04-05",
+    "buyerName": "",
+    "buyerPhone": "",
+    "soldAt": "",
+    "soldPrice": null,
+    "createdAt": "2024-04-05",
+    "section": "shop"
+  },
+  {
+    "id": "5",
+    "name": "古巴吉士納 招財鳥",
+    "nameEn": "Kruba Kisna Wealth Bird",
+    "price": 3200,
+    "originalPrice": null,
+    "category": [
+      "善加財"
+    ],
+    "master": "古巴吉士納",
+    "year": "2564",
+    "temple": "瓦班拍寺",
+    "material": "銅",
+    "description": "古巴吉士納招財鳥佛牌，象徵財運亨通、生意興隆。適合商家與求財人士佩戴。",
+    "descriptionEn": "",
+    "image": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=400&h=400&fit=crop",
+    "images": [
+      "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=400&h=400&fit=crop"
+    ],
+    "tags": [
+      "招財",
+      "生意"
+    ],
+    "featured": true,
+    "stock": 2,
+    "sold": false,
+    "listedAt": "2024-05-12",
+    "buyerName": "",
+    "buyerPhone": "",
+    "soldAt": "",
+    "soldPrice": null,
+    "createdAt": "2024-05-12",
+    "section": "shop"
+  },
+  {
+    "id": "6",
+    "name": "龍婆培 澤度金",
+    "nameEn": "LP Pae Jatukam",
+    "price": 6800,
+    "originalPrice": 7500,
+    "category": [
+      "其他"
+    ],
+    "master": "龍婆培",
+    "year": "2548",
+    "temple": "瓦班密寺",
+    "material": "紅銅",
+    "description": "經典澤度金佛牌，龍婆培加持，具有強大的財運與權力運勢。老牌收藏價值高。",
+    "descriptionEn": "",
+    "image": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&h=400&fit=crop",
+    "images": [
+      "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&h=400&fit=crop"
+    ],
+    "tags": [
+      "招財",
+      "收藏"
+    ],
+    "featured": false,
+    "stock": 1,
+    "sold": false,
+    "listedAt": "2024-06-01",
+    "buyerName": "",
+    "buyerPhone": "",
+    "soldAt": "",
+    "soldPrice": null,
+    "createdAt": "2024-06-01",
+    "section": "shop"
+  },
+  {
+    "id": "7",
+    "name": "阿贊多 成功佛",
+    "nameEn": "Ajarn Tho Success Buddha",
+    "price": 1500,
+    "originalPrice": null,
+    "category": [
+      "其他"
+    ],
+    "master": "阿贊多",
+    "year": "2566",
+    "temple": "私人",
+    "material": "合金",
+    "description": "阿贊多成功佛，助力考試、升職、項目成功。適合學生與上班族。",
+    "descriptionEn": "",
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop",
+    "images": [
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop"
+    ],
+    "tags": [
+      "成功",
+      "考試"
+    ],
+    "featured": false,
+    "stock": 10,
+    "sold": false,
+    "listedAt": "2024-07-18",
+    "buyerName": "",
+    "buyerPhone": "",
+    "soldAt": "",
+    "soldPrice": null,
+    "createdAt": "2024-07-18",
+    "section": "shop"
+  },
+  {
+    "id": "8",
+    "name": "龍婆帕 南奔自身",
+    "nameEn": "LP Phat Lamphun Self",
+    "price": 2200,
+    "originalPrice": 2800,
+    "category": [
+      "師傅自身"
+    ],
+    "master": "龍婆帕",
+    "year": "2555",
+    "temple": "瓦班帕寺",
+    "material": "銅",
+    "description": "龍婆帕南奔自身佛牌，以避險與保平安聞名，適合駕駛人士與外出工作者。",
+    "descriptionEn": "",
+    "image": "https://images.unsplash.com/photo-1617038260897-41db1bdb2c0f?w=400&h=400&fit=crop",
+    "images": [
+      "https://images.unsplash.com/photo-1617038260897-41db1bdb2c0f?w=400&h=400&fit=crop"
+    ],
+    "tags": [
+      "避險",
+      "保平安"
+    ],
+    "featured": false,
+    "stock": 4,
+    "sold": false,
+    "listedAt": "2024-08-22",
+    "buyerName": "",
+    "buyerPhone": "",
+    "soldAt": "",
+    "soldPrice": null,
+    "createdAt": "2024-08-22",
+    "section": "shop"
+  }
+]

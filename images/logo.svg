@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8d48b"/>
+      <stop offset="50%" style="stop-color:#c9a227"/>
+      <stop offset="100%" style="stop-color:#a68520"/>
+    </linearGradient>
+  </defs>
+  <!-- Outer circle with gold gradient -->
+  <circle cx="100" cy="100" r="95" fill="#0f0f0f" stroke="url(#gold)" stroke-width="6"/>
+  <!-- Inner decorative ring -->
+  <circle cx="100" cy="100" r="78" fill="none" stroke="url(#gold)" stroke-width="1.5" opacity="0.4"/>
+  <!-- White trendy 潮 character -->
+  <text x="100" y="118" text-anchor="middle" font-family="'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif" font-size="90" font-weight="700" fill="#ffffff">潮</text>
+</svg>
