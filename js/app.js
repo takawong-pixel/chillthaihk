@@ -299,6 +299,8 @@ function setFilter(cat) {
   document.querySelectorAll('.filter-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.filter === cat);
   });
+  const sel = document.getElementById('category-filter');
+  if (sel && sel.value !== cat) sel.value = cat;
   renderProducts();
 }
 

@@ -116,8 +116,19 @@
   </div>
 
   <div id="admin-app">
+    <div class="admin-mobile-bar">
+      <a href="../index.html" class="logo">
+        <div class="logo-icon">潮</div>
+        <div class="logo-text">
+          <span>潮泰佛</span>
+          <span>後台</span>
+        </div>
+      </a>
+      <button type="button" class="admin-menu-btn" onclick="toggleAdminMenu()" aria-label="選單">☰</button>
+    </div>
+    <div class="admin-sidebar-overlay" id="admin-overlay" onclick="closeAdminMenu()"></div>
     <div class="admin-layout">
-      <aside class="admin-sidebar">
+      <aside class="admin-sidebar" id="admin-sidebar">
         <a href="../index.html" class="logo">
           <div class="logo-icon">潮</div>
           <div class="logo-text">
@@ -354,6 +365,15 @@
   </div>
 
   <script>
+    function toggleAdminMenu() {
+      document.getElementById('admin-sidebar').classList.toggle('open');
+      document.getElementById('admin-overlay').classList.toggle('open');
+    }
+    function closeAdminMenu() {
+      document.getElementById('admin-sidebar').classList.remove('open');
+      document.getElementById('admin-overlay').classList.remove('open');
+    }
+
     const ADMIN_PASSWORD = 'czycz781119';
     const CATEGORIES = [
       '崇笛','四面神','必打','魯士','鬼王','師傅自身','藥師佛','行走佛',
@@ -474,6 +494,7 @@
     }
 
     function openList(section) {
+      closeAdminMenu();
       currentSection = section || 'shop';
       document.getElementById('panel-list').style.display = 'block';
       document.getElementById('panel-add').style.display = 'none';
@@ -495,6 +516,7 @@
     }
 
     function openAdd(section) {
+      closeAdminMenu();
       currentSection = section || 'shop';
       document.getElementById('panel-list').style.display = 'none';
       document.getElementById('panel-add').style.display = 'block';

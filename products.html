@@ -42,17 +42,28 @@
     <h1 class="section-title">佛牌目錄</h1>
     
     <div class="filters">
-      <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">全部</button>
-      <button class="filter-btn" data-filter="featured" onclick="setFilter('featured')">精選</button>
-      <button class="filter-btn" data-filter="師傅自身" onclick="setFilter('師傅自身')">師傅自身</button>
-      <button class="filter-btn" data-filter="四面神" onclick="setFilter('四面神')">四面神</button>
-      <button class="filter-btn" data-filter="崇笛" onclick="setFilter('崇笛')">崇笛</button>
-      <button class="filter-btn" data-filter="必打" onclick="setFilter('必打')">必打</button>
-      <button class="filter-btn" data-filter="坤平" onclick="setFilter('坤平')">坤平</button>
-      <button class="filter-btn" data-filter="符管符珠" onclick="setFilter('符管符珠')">符管符珠</button>
-      <button class="filter-btn" data-filter="哈努曼" onclick="setFilter('哈努曼')">哈努曼</button>
-      <button class="filter-btn" data-filter="善加財" onclick="setFilter('善加財')">善加財</button>
-      <button class="filter-btn" data-filter="其他" onclick="setFilter('其他')">其他</button>
+      <select class="filter-select" id="category-filter" onchange="setFilter(this.value)">
+        <option value="all">全部分類</option>
+        <option value="featured">精選</option>
+        <option value="師傅自身">師傅自身</option>
+        <option value="四面神">四面神</option>
+        <option value="崇笛">崇笛</option>
+        <option value="必打">必打</option>
+        <option value="魯士">魯士</option>
+        <option value="鬼王">鬼王</option>
+        <option value="藥師佛">藥師佛</option>
+        <option value="行走佛">行走佛</option>
+        <option value="哈努曼">哈努曼</option>
+        <option value="坤平">坤平</option>
+        <option value="食人虎">食人虎</option>
+        <option value="符管符珠">符管符珠</option>
+        <option value="二哥豐">二哥豐</option>
+        <option value="鷹神">鷹神</option>
+        <option value="善加財">善加財</option>
+        <option value="水財佛">水財佛</option>
+        <option value="魂魄勇">魂魄勇</option>
+        <option value="其他">其他</option>
+      </select>
       <div class="search-box">
         <input type="text" placeholder="搜尋佛牌、師父..." oninput="onSearch(this.value)">
       </div>
