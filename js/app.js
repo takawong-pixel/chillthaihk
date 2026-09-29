@@ -107,8 +107,9 @@ function renderProducts() {
         <img src="${p.image}" alt="${p.name}" loading="lazy" 
              onerror="this.src='https://via.placeholder.com/400x400/1a1a1a/c9a227?text=佛牌'">
         ${p.featured ? '<span class="product-badge featured">精選</span>' : ''}
-        ${p.stock <= 0 ? '<span class="product-badge" style="background:#9b2226">已售罄</span>' : ''}
-        ${p.originalPrice ? '<span class="product-badge" style="right:10px;left:auto;background:#2d6a4f">特價</span>' : ''}
+        ${p.stock <= 0 && p.section === 'shop' ? '<span class="product-badge" style="background:#9b2226">已售罄</span>' : ''}
+        ${p.originalPrice && p.section !== 'preorder' ? '<span class="product-badge" style="right:10px;left:auto;background:#2d6a4f">特價</span>' : ''}
+        ${(p.images && p.images.length > 1) ? '<span class="product-badge" style="right:10px;bottom:10px;top:auto;left:auto;background:rgba(0,0,0,0.65)">📷 ' + p.images.length + '</span>' : ''}
       </div>
       <div class="product-info">
         <div class="product-master">${p.master ? p.master + (p.year ? ' · ' + p.year : '') : (p.preorderStatus || '')}</div>
@@ -131,6 +132,28 @@ function renderProducts() {
   `).join('');
 }
 
+let galleryImages = [];
+let galleryIndex = 0;
+
+function goGallery(i) {
+  if (!galleryImages.length) return;
+  galleryIndex = i;
+  const main = document.getElementById('main-img');
+  if (main) main.src = galleryImages[galleryIndex];
+  const counter = document.getElementById('gallery-counter');
+  if (counter) counter.textContent = (galleryIndex + 1) + ' / ' + galleryImages.length;
+  document.querySelectorAll('#modal-thumbs img').forEach((el, idx) => {
+    el.classList.toggle('active', idx === galleryIndex);
+  });
+}
+function shiftGallery(delta) {
+  if (!galleryImages.length) return;
+  let i = galleryIndex + delta;
+  if (i < 0) i = galleryImages.length - 1;
+  if (i >= galleryImages.length) i = 0;
+  goGallery(i);
+}
+
 function openProduct(id) {
   const p = products.find(x => x.id === id);
   if (!p || p.sold) return;
@@ -138,23 +161,28 @@ function openProduct(id) {
   const modal = document.getElementById('product-modal');
   const content = document.getElementById('modal-body');
   
-  const images = p.images && p.images.length ? p.images : [p.image];
+  const images = p.images && p.images.length ? p.images : (p.image ? [p.image] : []);
+  galleryImages = images;
+  galleryIndex = 0;
   const cats = getCats(p);
   
   content.innerHTML = `
     <div class="modal-content">
       <div class="modal-gallery">
-        <div class="modal-main-img">
+        <div class="modal-main-img" style="position:relative">
           <img id="main-img" src="${images[0]}" alt="${p.name}"
                onerror="this.src='https://via.placeholder.com/400x400/1a1a1a/c9a227?text=佛牌'">
+          ${images.length > 1 ? `
+          <button type="button" onclick="shiftGallery(-1)" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.55);border:none;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1.2rem">‹</button>
+          <button type="button" onclick="shiftGallery(1)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.55);border:none;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1.2rem">›</button>
+          <span id="gallery-counter" style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,0.55);color:#fff;font-size:0.75rem;padding:0.2rem 0.5rem;border-radius:4px">1 / ${images.length}</span>
+          ` : ''}
         </div>
         ${images.length > 1 ? `
-        <div class="modal-thumbs">
+        <div class="modal-thumbs" id="modal-thumbs">
           ${images.map((img, i) => `
-            <img src="${img}" class="${i===0?'active':''}" 
-                 onclick="document.getElementById('main-img').src=this.src; 
-                          document.querySelectorAll('.modal-thumbs img').forEach(t=>t.classList.remove('active'));
-                          this.classList.add('active');"
+            <img src="${img}" class="${i===0?'active':''}" data-idx="${i}"
+                 onclick="goGallery(${i})"
                  onerror="this.style.display='none'">
           `).join('')}
         </div>` : ''}

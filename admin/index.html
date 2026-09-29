@@ -97,6 +97,37 @@
       cursor: pointer;
     }
     .variant-row button:hover { border-color: var(--danger); color: var(--danger); }
+    .image-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      align-items: center;
+    }
+    .image-row input {
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+    .image-row button {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      width: 32px; height: 32px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .image-row button:hover { border-color: var(--danger); color: var(--danger); }
+    .image-row .img-preview {
+      width: 40px; height: 40px;
+      object-fit: cover;
+      border-radius: 6px;
+      background: #111;
+      border: 1px solid var(--border);
+    }
     .field-group { display: none; }
     .field-group.show { display: block; }
   </style>
@@ -230,10 +261,12 @@
                 </div>
               </div>
 
-              <!-- Image -->
+              <!-- Images (multiple) -->
               <div class="form-group">
-                <label>圖片網址 *</label>
-                <input type="url" id="f-image" required placeholder="https://...">
+                <label>圖片網址 *（最多 8 張，第一張為封面）</label>
+                <div id="images-list"></div>
+                <button type="button" class="btn btn-outline btn-sm" style="margin-top:0.4rem" onclick="addImageRow()">+ 新增圖片</button>
+                <p style="font-size:0.8rem;color:var(--text-muted);margin-top:0.4rem">請填寫圖片完整網址，例如 https://...</p>
               </div>
 
               <!-- Shop / Casing: single price -->
@@ -493,6 +526,44 @@
       arr.forEach(v => addVariantRow(v.material, v.price));
     }
 
+    function addImageRow(url) {
+      const list = document.getElementById('images-list');
+      if (list.children.length >= 8) {
+        alert('最多 8 張圖片');
+        return;
+      }
+      const row = document.createElement('div');
+      row.className = 'image-row';
+      const val = url || '';
+      row.innerHTML =
+        '<input type="url" class="img-url" placeholder="https://..." value="' + val.replace(/"/g, '&quot;') + '" oninput="previewImage(this)">' +
+        '<img class="img-preview" src="' + (val || '') + '" alt="" onerror="this.style.opacity=0.3">' +
+        '<button type="button" onclick="this.parentElement.remove()" title="刪除">✕</button>';
+      list.appendChild(row);
+    }
+    function previewImage(input) {
+      const img = input.parentElement.querySelector('.img-preview');
+      if (img) {
+        img.style.opacity = 1;
+        img.src = input.value.trim();
+      }
+    }
+    function getImages() {
+      const rows = document.querySelectorAll('#images-list .image-row');
+      const result = [];
+      rows.forEach(r => {
+        const u = r.querySelector('.img-url').value.trim();
+        if (u) result.push(u);
+      });
+      return result;
+    }
+    function setImages(images) {
+      const list = document.getElementById('images-list');
+      list.innerHTML = '';
+      const arr = images && images.length ? images : [''];
+      arr.forEach(u => addImageRow(u));
+    }
+
     function openList(section) {
       closeAdminMenu();
       currentSection = section || 'shop';
@@ -531,6 +602,7 @@
       document.getElementById('f-listedAt').value = today;
       document.getElementById('f-listedAt2').value = today;
       setVariants([{ material: '', price: '' }]);
+      setImages(['']);
       applySectionFields(currentSection);
       const addLabels = { shop: '新增佛牌', preorder: '新增聖物預訂', casing: '新增佛牌包殼' };
       document.getElementById('form-title').textContent = addLabels[currentSection] || '新增';
@@ -672,7 +744,8 @@
       setSelectedCats(p.category);
       document.getElementById('f-temple').value = p.temple || '';
       document.getElementById('f-material').value = p.material || '';
-      document.getElementById('f-image').value = p.image || '';
+      const imgs = (p.images && p.images.length) ? p.images : (p.image ? [p.image] : ['']);
+      setImages(imgs);
       document.getElementById('f-price').value = p.price != null ? p.price : '';
       document.getElementById('f-originalPrice').value = p.originalPrice != null ? p.originalPrice : '';
       document.getElementById('f-stock').value = p.stock != null ? p.stock : 1;
@@ -714,6 +787,9 @@
         if (!document.getElementById('f-master').value.trim()) { alert('請填寫師父'); return; }
       }
 
+      const imageList = getImages();
+      if (imageList.length === 0) { alert('請至少填寫一張圖片網址'); return; }
+
       let variants = [];
       let price = parseInt(document.getElementById('f-price').value) || 0;
       if (section === 'preorder') {
@@ -737,8 +813,8 @@
         temple: section === 'shop' ? document.getElementById('f-temple').value.trim() : '',
         material: section === 'shop' ? document.getElementById('f-material').value.trim() : '',
         variants: section === 'preorder' ? variants : [],
-        image: document.getElementById('f-image').value.trim(),
-        images: [document.getElementById('f-image').value.trim()],
+        image: imageList[0],
+        images: imageList,
         price: price,
         originalPrice: section === 'shop' ? (parseInt(document.getElementById('f-originalPrice').value) || null) : null,
         stock: section === 'shop' ? (parseInt(document.getElementById('f-stock').value) || 0) : 1,
