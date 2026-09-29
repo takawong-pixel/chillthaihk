@@ -1,1 +1,42 @@
-[]
+[
+  {
+    "id": "1790695956494",
+    "section": "shop",
+    "name": "嬌清段坤平",
+    "nameEn": "",
+    "master": "阿贊阿塔碰",
+    "year": "2569",
+    "category": [
+      "坤平"
+    ],
+    "temple": "",
+    "material": "青銅",
+    "variants": [],
+    "image": "https://pub-ab4bb242cad64d719493830c4ec397d2.r2.dev/chillitem/it00001a.jpg",
+    "images": [
+      "https://pub-ab4bb242cad64d719493830c4ec397d2.r2.dev/chillitem/it00001a.jpg",
+      "https://pub-ab4bb242cad64d719493830c4ec397d2.r2.dev/chillitem/it00001b.jpg"
+    ],
+    "price": 680,
+    "originalPrice": null,
+    "stock": 1,
+    "tags": [
+      "招財",
+      "持續運勢",
+      "人緣"
+    ],
+    "description": "按照古法神秘法本督造 , 是一种古老而神秘变化 , 能逆境求生 . \n\n這是一種被認為擁有神力和無敵之身的聖物。佛陀遊歷天下的傳說中提到，在拘桑陀佛時期，他造訪了素萬那普地區，遇到一個見識不清的巨人。他決定降伏巨人，便將自己的肝臟獻給了守山的巨人。然而，肝臟卻變成了堅硬的石頭。巨人無法食用，便要求歸還，但拘桑陀佛拒絕了，說施比買更有價值。於是，他囑咐巨人守護他的肝臟，直到般遮羅劫結束。\n\n長鐵肝產自帕府的長鐵礦。至今，人們仍然保留著向環繞鐵肝的神靈祈禱和祈福的傳統。\n\n🧿 過去，人們認為它是蘭納時期用來製造武器的優質鐵。目前，人們用它來祭拜以求避兇。",
+    "descriptionEn": "",
+    "featured": true,
+    "sold": false,
+    "listedAt": "2026-09-29",
+    "buyerName": "",
+    "buyerPhone": "",
+    "soldAt": "",
+    "soldPrice": null,
+    "deadline": "",
+    "expectedRelease": "",
+    "preorderStatus": "",
+    "createdAt": "2026-09-29"
+  }
+]
