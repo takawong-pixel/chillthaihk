@@ -4,31 +4,21 @@ let cart = JSON.parse(localStorage.getItem('cta_cart') || '[]');
 let currentFilter = 'all';
 let searchQuery = '';
 
-// Load products
+// Load products — always from server (GitHub/Netlify).
+// localStorage is only used by admin backend, never for public pages.
 async function loadProducts() {
   try {
-    const res = await fetch('data/products.json');
+    // cache-bust so mobile browsers don't keep an old products.json
+    const res = await fetch('data/products.json?t=' + Date.now(), { cache: 'no-store' });
     if (res.ok) {
       products = await res.json();
+      if (!Array.isArray(products)) products = [];
     } else {
       throw new Error('fetch failed');
     }
   } catch (e) {
-    const stored = localStorage.getItem('cta_products');
-    if (stored) {
-      products = JSON.parse(stored);
-    } else {
-      products = [];
-      console.warn('No products loaded');
-    }
-  }
-  // Merge with localStorage overrides if any
-  const overrides = localStorage.getItem('cta_products');
-  if (overrides) {
-    try {
-      const localProds = JSON.parse(overrides);
-      if (localProds.length > 0) products = localProds;
-    } catch {}
+    console.warn('Failed to load products.json', e);
+    products = [];
   }
   renderProducts();
   updateCartUI();
