@@ -291,12 +291,20 @@
               <!-- Preorder dates -->
               <div class="form-row field-preorder" id="wrap-preorder-dates">
                 <div class="form-group">
-                  <label>預訂截單日期</label>
-                  <input type="date" id="f-deadline">
+                  <label>預訂截單</label>
+                  <select id="f-deadline-type" onchange="toggleDeadlineDate()">
+                    <option value="date">指定日期</option>
+                    <option value="full">滿額即止</option>
+                  </select>
+                  <input type="date" id="f-deadline" style="margin-top:0.4rem">
                 </div>
                 <div class="form-group">
-                  <label>預計出廟日期</label>
-                  <input type="date" id="f-expectedRelease">
+                  <label>預計出廟</label>
+                  <select id="f-release-type" onchange="toggleReleaseDate()">
+                    <option value="date">指定日期</option>
+                    <option value="tba">另行通知</option>
+                  </select>
+                  <input type="date" id="f-expectedRelease" style="margin-top:0.4rem">
                 </div>
               </div>
 
@@ -405,6 +413,14 @@
     function closeAdminMenu() {
       document.getElementById('admin-sidebar').classList.remove('open');
       document.getElementById('admin-overlay').classList.remove('open');
+    }
+    function toggleDeadlineDate() {
+      const type = document.getElementById('f-deadline-type').value;
+      document.getElementById('f-deadline').style.display = type === 'date' ? '' : 'none';
+    }
+    function toggleReleaseDate() {
+      const type = document.getElementById('f-release-type').value;
+      document.getElementById('f-expectedRelease').style.display = type === 'date' ? '' : 'none';
     }
 
     const ADMIN_PASSWORD = 'czycz781119';
@@ -603,6 +619,10 @@
       document.getElementById('f-listedAt2').value = today;
       setVariants([{ material: '', price: '' }]);
       setImages(['']);
+      const dlType = document.getElementById('f-deadline-type');
+      const rlType = document.getElementById('f-release-type');
+      if (dlType) { dlType.value = 'date'; toggleDeadlineDate(); }
+      if (rlType) { rlType.value = 'date'; toggleReleaseDate(); }
       applySectionFields(currentSection);
       const addLabels = { shop: '新增佛牌', preorder: '新增聖物預訂', casing: '新增佛牌包殼' };
       document.getElementById('form-title').textContent = addLabels[currentSection] || '新增';
@@ -760,8 +780,22 @@
       document.getElementById('f-soldPrice').value = p.soldPrice != null ? p.soldPrice : '';
       document.getElementById('f-listedAt').value = p.listedAt || p.createdAt || '';
       document.getElementById('f-listedAt2').value = p.listedAt || p.createdAt || '';
-      document.getElementById('f-deadline').value = p.deadline || '';
-      document.getElementById('f-expectedRelease').value = p.expectedRelease || '';
+      if (p.deadline === '滿額即止') {
+        document.getElementById('f-deadline-type').value = 'full';
+        document.getElementById('f-deadline').value = '';
+      } else {
+        document.getElementById('f-deadline-type').value = 'date';
+        document.getElementById('f-deadline').value = p.deadline || '';
+      }
+      toggleDeadlineDate();
+      if (p.expectedRelease === '另行通知') {
+        document.getElementById('f-release-type').value = 'tba';
+        document.getElementById('f-expectedRelease').value = '';
+      } else {
+        document.getElementById('f-release-type').value = 'date';
+        document.getElementById('f-expectedRelease').value = p.expectedRelease || '';
+      }
+      toggleReleaseDate();
       document.getElementById('f-preorderStatus').value = p.preorderStatus || '接受預訂中';
       setVariants(p.variants && p.variants.length ? p.variants : [{ material: '', price: '' }]);
       toggleSoldFields();
@@ -828,8 +862,12 @@
         buyerPhone: section === 'shop' ? document.getElementById('f-buyerPhone').value.trim() : '',
         soldAt: section === 'shop' ? (document.getElementById('f-soldAt').value || '') : '',
         soldPrice: section === 'shop' ? (parseInt(document.getElementById('f-soldPrice').value) || null) : null,
-        deadline: section === 'preorder' ? (document.getElementById('f-deadline').value || '') : '',
-        expectedRelease: section === 'preorder' ? (document.getElementById('f-expectedRelease').value || '') : '',
+        deadline: section === 'preorder'
+          ? (document.getElementById('f-deadline-type').value === 'full' ? '滿額即止' : (document.getElementById('f-deadline').value || ''))
+          : '',
+        expectedRelease: section === 'preorder'
+          ? (document.getElementById('f-release-type').value === 'tba' ? '另行通知' : (document.getElementById('f-expectedRelease').value || ''))
+          : '',
         preorderStatus: section === 'preorder' ? document.getElementById('f-preorderStatus').value : '',
         createdAt: existing?.createdAt || today
       };

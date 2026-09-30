@@ -188,14 +188,15 @@ function openProduct(id) {
         </div>` : ''}
       </div>
       <div class="modal-details">
-        <div class="product-master" style="margin-bottom:0.3rem">${p.master}</div>
+        ${p.master ? `<div class="product-master" style="margin-bottom:0.3rem">${p.master}</div>` : ''}
         <h2>${p.name}</h2>
+        ${p.section === 'shop' || !p.section ? `
         <div class="modal-meta">
           <span>📅 ${p.year || '—'}</span>
           <span>🛕 ${p.temple || '—'}</span>
           <span>🔩 ${p.material || '—'}</span>
           <span>📂 ${cats.join('、') || '—'}</span>
-        </div>
+        </div>` : ''}
         <div class="modal-price">
           ${displayPrice(p)}
           ${p.originalPrice && p.section !== 'preorder' ? `<span class="original">$${p.originalPrice.toLocaleString()}</span>` : ''}
@@ -229,7 +230,11 @@ function openProduct(id) {
           </button>
         </div>
         <p style="margin-top:1rem;font-size:0.8rem;color:var(--text-muted)">
-          * 佛牌皆為正品。庫存有限，售完為止。
+          ${p.section === 'casing'
+            ? '* 價格為常見的一般佛牌尺寸 (包括符管及符珠等) 如需特殊形狀或加大尺寸之聖物，費用會有所調整，歡迎查詢'
+            : p.section === 'preorder'
+              ? ''
+              : '* 佛牌皆為正品。庫存有限，售完為止。'}
         </p>
       </div>
     </div>

@@ -1,5 +1,88 @@
 [
   {
+    "id": "1790779486760",
+    "section": "casing",
+    "name": "透明防水殼定制",
+    "nameEn": "",
+    "master": "",
+    "year": "",
+    "category": [],
+    "temple": "",
+    "material": "",
+    "variants": [],
+    "image": "https://pub-ab4bb242cad64d719493830c4ec397d2.r2.dev/waterproof/wf0001.jpg",
+    "images": [
+      "https://pub-ab4bb242cad64d719493830c4ec397d2.r2.dev/waterproof/wf0001.jpg",
+      "https://pub-ab4bb242cad64d719493830c4ec397d2.r2.dev/waterproof/wf0002.jpg",
+      "https://pub-ab4bb242cad64d719493830c4ec397d2.r2.dev/waterproof/wf0003.jpg",
+      "https://pub-ab4bb242cad64d719493830c4ec397d2.r2.dev/waterproof/wf0004.jpg",
+      "https://pub-ab4bb242cad64d719493830c4ec397d2.r2.dev/waterproof/wf0005.jpg"
+    ],
+    "price": 250,
+    "originalPrice": null,
+    "stock": 1,
+    "tags": [
+      "透明防水"
+    ],
+    "description": "此價格為常見的一般佛牌、符管及符珠等尺寸\n如需特殊尺寸或形狀之聖物，包殼費用會有所調整，歡迎查詢",
+    "descriptionEn": "",
+    "featured": false,
+    "sold": false,
+    "listedAt": "2026-09-30",
+    "buyerName": "",
+    "buyerPhone": "",
+    "soldAt": "",
+    "soldPrice": null,
+    "deadline": "",
+    "expectedRelease": "",
+    "preorderStatus": "",
+    "createdAt": "2026-09-30"
+  },
+  {
+    "id": "1790777588550",
+    "section": "preorder",
+    "name": "塔基安樹女神",
+    "nameEn": "",
+    "master": "帕阿贊塔瑪頓 Wat Nong Prue",
+    "year": "",
+    "category": [],
+    "temple": "",
+    "material": "",
+    "variants": [
+      {
+        "material": "聖粉混合",
+        "price": 80
+      }
+    ],
+    "image": "https://pub-ab4bb242cad64d719493830c4ec397d2.r2.dev/booking/bk0001.jpg",
+    "images": [
+      "https://pub-ab4bb242cad64d719493830c4ec397d2.r2.dev/booking/bk0001.jpg"
+    ],
+    "price": 0,
+    "originalPrice": null,
+    "stock": 1,
+    "tags": [
+      "偏財",
+      "招人緣",
+      "異性緣",
+      "成願",
+      "鎖心"
+    ],
+    "description": "塔基安木粉與108種草藥粉混合製成。\n限量製作399尊",
+    "descriptionEn": "",
+    "featured": false,
+    "sold": false,
+    "listedAt": "2026-09-30",
+    "buyerName": "",
+    "buyerPhone": "",
+    "soldAt": "",
+    "soldPrice": null,
+    "deadline": "2026-11-30",
+    "expectedRelease": "2027-06-30",
+    "preorderStatus": "接受預訂中",
+    "createdAt": "2026-09-30"
+  },
+  {
     "id": "1790695956494",
     "section": "shop",
     "name": "嬌清段坤平",
