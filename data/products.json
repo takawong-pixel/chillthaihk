@@ -1,5 +1,45 @@
 [
   {
+    "id": "1790833229553",
+    "section": "preorder",
+    "name": "七龍佛2569",
+    "nameEn": "",
+    "master": "帕阿贊塔瑪頓 Wat Nong Prue",
+    "year": "",
+    "category": [],
+    "temple": "",
+    "material": "",
+    "variants": [
+      {
+        "material": "混合金屬",
+        "price": 180
+      }
+    ],
+    "image": "https://pub-ab4bb242cad64d719493830c4ec397d2.r2.dev/booking/bk0002.jpg",
+    "images": [
+      "https://pub-ab4bb242cad64d719493830c4ec397d2.r2.dev/booking/bk0002.jpg"
+    ],
+    "price": 0,
+    "originalPrice": null,
+    "stock": 1,
+    "tags": [
+      "強力擋災避險、逢凶化吉、防小人"
+    ],
+    "description": "每尊均為手工雕刻。\n佛歷2569年七龍佛。\n\n為紀念寺廟50週年而製作。\n\n帕阿贊塔瑪頓 Wat Nong Prue\n\n佛陀端坐於那伽蛇之下的形象，由礦物和其他材料混合製成。\n\n每尊背面均有帕阿贊塔瑪頓的親筆刻符。",
+    "descriptionEn": "",
+    "featured": false,
+    "sold": false,
+    "listedAt": "2026-10-01",
+    "buyerName": "",
+    "buyerPhone": "",
+    "soldAt": "",
+    "soldPrice": null,
+    "deadline": "滿額即止",
+    "expectedRelease": "另行通知",
+    "preorderStatus": "接受預訂中",
+    "createdAt": "2026-10-01"
+  },
+  {
     "id": "1790779486760",
     "section": "casing",
     "name": "透明防水殼定制",
@@ -24,7 +64,7 @@
     "tags": [
       "透明防水"
     ],
-    "description": "此價格為常見的一般佛牌、符管及符珠等尺寸\n如需特殊尺寸或形狀之聖物，包殼費用會有所調整，歡迎查詢",
+    "description": "",
     "descriptionEn": "",
     "featured": false,
     "sold": false,

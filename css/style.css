@@ -479,6 +479,10 @@ img {
   overflow: hidden;
   background: #111;
 }
+/* 預訂專區 4:3 */
+.product-grid.grid-2-4 .product-img {
+  aspect-ratio: 4 / 3;
+}
 
 .product-img img {
   width: 100%;
@@ -1304,5 +1308,35 @@ img {
   }
   .admin-main {
     padding: 1rem;
+  }
+}
+
+
+/* Compact channel button in header */
+.btn-channel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 20px;
+  background: #25d366;
+  color: #fff !important;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: var(--transition);
+  border: none;
+}
+.btn-channel:hover {
+  background: #1ebe57;
+  color: #fff !important;
+}
+@media (max-width: 768px) {
+  .btn-channel .btn-channel-text {
+    display: none;
+  }
+  .btn-channel {
+    padding: 0.4rem 0.65rem;
+    font-size: 0.85rem;
   }
 }
