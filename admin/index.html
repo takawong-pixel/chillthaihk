@@ -340,7 +340,7 @@
 
               <!-- Description -->
               <div class="form-group">
-                <label>描述 *</label>
+                <label id="label-description">描述 *</label>
                 <textarea id="f-description" required placeholder="介紹..."></textarea>
               </div>
 
@@ -508,6 +508,16 @@
       document.getElementById('f-price').required = (section === 'shop' || section === 'casing');
       // Stock required for shop
       document.getElementById('f-stock').required = (section === 'shop');
+      // Description optional for casing
+      const descInput = document.getElementById('f-description');
+      const descLabel = document.getElementById('label-description');
+      if (section === 'casing') {
+        descInput.required = false;
+        if (descLabel) descLabel.textContent = '描述（選填）';
+      } else {
+        descInput.required = true;
+        if (descLabel) descLabel.textContent = '描述 *';
+      }
     }
 
     // Variants

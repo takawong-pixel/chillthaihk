@@ -3,6 +3,8 @@ let products = [];
 let cart = JSON.parse(localStorage.getItem('cta_cart') || '[]');
 let currentFilter = 'all';
 let searchQuery = '';
+let currentPage = 1;
+const PAGE_SIZE = 12;
 
 // Load products — always from server (GitHub/Netlify).
 // localStorage is only used by admin backend, never for public pages.
@@ -76,22 +78,31 @@ function renderProducts() {
     const matchSearch = !searchQuery || 
       p.name.includes(searchQuery) || 
       (p.nameEn && p.nameEn.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      p.master.includes(searchQuery) ||
+      (p.master && p.master.includes(searchQuery)) ||
       (p.tags && p.tags.some(t => t.includes(searchQuery))) ||
       cats.some(c => c.includes(searchQuery));
     return matchCat && matchSearch;
   });
 
-  if (filtered.length === 0) {
+  const total = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  if (currentPage > totalPages) currentPage = totalPages;
+  if (currentPage < 1) currentPage = 1;
+
+  const startIdx = (currentPage - 1) * PAGE_SIZE;
+  const pageItems = filtered.slice(startIdx, startIdx + PAGE_SIZE);
+
+  if (total === 0) {
     grid.innerHTML = `
       <div class="empty-state" style="grid-column:1/-1">
         <div class="icon">📿</div>
         <p>找不到符合條件的佛牌</p>
       </div>`;
+    renderPagination(0, 0);
     return;
   }
 
-  grid.innerHTML = filtered.map(p => `
+  grid.innerHTML = pageItems.map(p => `
     <div class="product-card" onclick="openProduct('${p.id}')">
       <div class="product-img">
         <img src="${p.image}" alt="${p.name}" loading="lazy" 
@@ -120,29 +131,37 @@ function renderProducts() {
       </div>
     </div>
   `).join('');
+
+  renderPagination(totalPages, total);
 }
 
-let galleryImages = [];
-let galleryIndex = 0;
+function renderPagination(totalPages, totalItems) {
+  const el = document.getElementById('pagination');
+  if (!el) return;
+  if (!totalItems || totalPages <= 1) {
+    el.innerHTML = totalItems ? `<span class="page-info">共 ${totalItems} 件</span>` : '';
+    return;
+  }
+  let html = `<button type="button" onclick="goPage(${currentPage - 1})" ${currentPage <= 1 ? 'disabled' : ''}>‹</button>`;
+  for (let i = 1; i <= totalPages; i++) {
+    if (totalPages > 7 && Math.abs(i - currentPage) > 2 && i !== 1 && i !== totalPages) {
+      if (i === 2 || i === totalPages - 1) html += `<span class="page-info">…</span>`;
+      continue;
+    }
+    html += `<button type="button" class="${i === currentPage ? 'active' : ''}" onclick="goPage(${i})">${i}</button>`;
+  }
+  html += `<button type="button" onclick="goPage(${currentPage + 1})" ${currentPage >= totalPages ? 'disabled' : ''}>›</button>`;
+  html += `<span class="page-info">共 ${totalItems} 件</span>`;
+  el.innerHTML = html;
+}
 
-function goGallery(i) {
-  if (!galleryImages.length) return;
-  galleryIndex = i;
-  const main = document.getElementById('main-img');
-  if (main) main.src = galleryImages[galleryIndex];
-  const counter = document.getElementById('gallery-counter');
-  if (counter) counter.textContent = (galleryIndex + 1) + ' / ' + galleryImages.length;
-  document.querySelectorAll('#modal-thumbs img').forEach((el, idx) => {
-    el.classList.toggle('active', idx === galleryIndex);
-  });
+function goPage(page) {
+  currentPage = page;
+  renderProducts();
+  const grid = document.getElementById('product-grid');
+  if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-function shiftGallery(delta) {
-  if (!galleryImages.length) return;
-  let i = galleryIndex + delta;
-  if (i < 0) i = galleryImages.length - 1;
-  if (i >= galleryImages.length) i = 0;
-  goGallery(i);
-}
+
 
 function openProduct(id) {
   const p = products.find(x => x.id === id);
@@ -319,6 +338,7 @@ function checkout() {
 
 function setFilter(cat) {
   currentFilter = cat;
+  currentPage = 1;
   document.querySelectorAll('.filter-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.filter === cat);
   });
@@ -329,6 +349,7 @@ function setFilter(cat) {
 
 function onSearch(val) {
   searchQuery = val.trim();
+  currentPage = 1;
   renderProducts();
 }
 

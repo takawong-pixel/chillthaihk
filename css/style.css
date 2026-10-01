@@ -357,8 +357,104 @@ img {
 /* Product Grid */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 1.5rem;
+}
+/* 佛牌目錄 / 佛牌包殼：手機 1 欄，電腦 4 欄 */
+.product-grid.grid-1-4 {
+  grid-template-columns: 1fr;
+}
+/* 預訂專區：手機 2 欄，電腦 4 欄 */
+.product-grid.grid-2-4 {
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width: 768px) {
+  .product-grid.grid-1-4,
+  .product-grid.grid-2-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+/* 首頁精選維持自動 */
+.product-grid.grid-featured {
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+.pagination button {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 0.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+.pagination button:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.pagination button.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #111;
+  font-weight: 600;
+}
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.pagination .page-info {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0 0.5rem;
+}
+
+/* WhatsApp channel banner */
+.wa-channel-banner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem 2rem;
+}
+.wa-channel-card {
+  background: linear-gradient(135deg, rgba(37,211,102,0.12), rgba(201,162,39,0.08));
+  border: 1px solid rgba(37,211,102,0.35);
+  border-radius: 16px;
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+.wa-channel-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.35rem;
+  color: var(--text);
+}
+.wa-channel-card p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+.btn-whatsapp {
+  background: #25d366;
+  color: #fff;
+  white-space: nowrap;
+}
+.btn-whatsapp:hover {
+  background: #1ebe57;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37,211,102,0.35);
 }
 
 .product-card {

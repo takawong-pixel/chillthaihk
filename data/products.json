@@ -77,8 +77,8 @@
     "buyerPhone": "",
     "soldAt": "",
     "soldPrice": null,
-    "deadline": "2026-11-30",
-    "expectedRelease": "2027-06-30",
+    "deadline": "滿額即止",
+    "expectedRelease": "另行通知",
     "preorderStatus": "接受預訂中",
     "createdAt": "2026-09-30"
   },
